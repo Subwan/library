@@ -19,7 +19,7 @@ public abstract class AbstractMapper {
 
     public int saveInDataBase(String sql) {
         try {
-            Connection conn = NerworkHelper.getConnection();
+            Connection conn = NetworkHelper.getConnection();
             PreparedStatement preStatement = conn.prepareStatement(sql);
             preStatement.executeUpdate();
             int count = preStatement.getUpdateCount();
@@ -33,7 +33,7 @@ public abstract class AbstractMapper {
 
     protected Book loadFromDataBase(String sql) {
         try {
-            Connection conn = NerworkHelper.getConnection();
+            Connection conn = NetworkHelper.getConnection();
             PreparedStatement preStatement = conn.prepareStatement(sql);
             ResultSet result = preStatement.executeQuery();
             Book book = null;
@@ -48,5 +48,7 @@ public abstract class AbstractMapper {
         }
         return null;
     }
+
+    protected abstract Book doLoad(ResultSet result);
 
 }
