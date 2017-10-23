@@ -15,6 +15,13 @@ public class Book {
         setAvailability(availability);
     }
 
+    public Book(String name, LocalDateTime date, boolean availability) {
+        setName(name);
+        setDate(date);
+        setAvailability(availability);
+    }
+
+
     private void setId(int id) {
         this.id = id;
     }
