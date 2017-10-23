@@ -3,7 +3,7 @@ package com.library.www.BL;
 import java.time.*;
 
 public class Book {
-    private int id;
+    private long id;
     private String name;
     private LocalDateTime date;
     private boolean availability;
@@ -22,11 +22,11 @@ public class Book {
     }
 
 
-    private void setId(int id) {
+    private void setId(long id) {
         this.id = id;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
