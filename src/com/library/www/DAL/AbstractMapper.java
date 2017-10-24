@@ -6,10 +6,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public abstract class AbstractMapper {
 
-    public abstract Book findById(long id);
+    public abstract List<Book> findAllBooks(long id);
 
     public abstract boolean insertBook(Book book);
 
