@@ -1,21 +1,21 @@
-package com.library.www.BL;
+package com.library.www.Model;
 
 import java.time.*;
 
 public class Book {
     private long id;
     private String name;
-    private LocalDateTime date;
+    private LocalDate date;
     private boolean availability;
 
-    public Book(int id, String name, LocalDateTime date, boolean availability) {
+    public Book(long id, String name, LocalDate date, boolean availability) {
         setId(id);
         setName(name);
         setDate(date);
         setAvailability(availability);
     }
 
-    public Book(String name, LocalDateTime date, boolean availability) {
+    public Book(String name, LocalDate date, boolean availability) {
         setName(name);
         setDate(date);
         setAvailability(availability);
@@ -38,11 +38,11 @@ public class Book {
         return name;
     }
 
-    private void setDate(LocalDateTime date) {
+    private void setDate(LocalDate date) {
         this.date = date;
     }
 
-    public LocalDateTime getDate() {
+    public LocalDate getDate() {
         return date;
     }
 

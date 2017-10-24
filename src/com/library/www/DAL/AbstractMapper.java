@@ -1,6 +1,6 @@
 package com.library.www.DAL;
 
-import com.library.www.BL.Book;
+import com.library.www.Model.Book;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,7 +12,7 @@ public abstract class AbstractMapper {
 
     public abstract List<Book> findAllBooks(long id);
 
-    public abstract boolean insertBook(Book book);
+    public abstract void insertBook(Book book);
 
     public abstract boolean updateBook(Book book);
 
@@ -32,17 +32,17 @@ public abstract class AbstractMapper {
         return 0;
     }
 
-    protected Book loadFromDataBase(String sql) {
+    protected List <Book> loadFromDataBase(String sql) {
         try {
             Connection conn = NetworkHelper.getConnection();
             PreparedStatement preStatement = conn.prepareStatement(sql);
             ResultSet result = preStatement.executeQuery();
-            Book book = null;
-            if (result.next()) {
-                book = doLoad(result);
+            List<Book> books = null;
+            while (result.next()) {
+                books.add(doLoad(result));
             }
             conn.close();
-            return book;
+            return books;
 
         } catch (SQLException e) {
             e.printStackTrace();

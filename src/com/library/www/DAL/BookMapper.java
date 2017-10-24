@@ -1,8 +1,12 @@
 package com.library.www.DAL;
 
-import com.library.www.BL.Book;
+import com.library.www.Model.Book;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,35 +22,54 @@ public class BookMapper extends AbstractMapper {
 
     private final static String FIND_ALL_BOOKS = String.format("select  %s, %s, %s from %s;",
             NAME, DATE, AVAILABILITY, TABLE_NAME);
-    private final static String INSERT_BOOK = String.format("insert into %s (%s,%s,%s) values ('?',?,?);",
-            TABLE_NAME, NAME, DATE, AVAILABILITY);
-    private final static String UPDATE_BOOK = String.format("update %s set %s = ?, %s = ?, %s = ? where %s = ?;",
-            TABLE_NAME, NAME, DATE, AVAILABILITY, ID);
-    private final static String DELETE_BOOK = String.format("delete from %s where %s = ?", TABLE_NAME, ID);
 
     @Override
     public List<Book> findAllBooks(long id) {
-
-        return null;
+        String sql = FIND_ALL_BOOKS;
+        return loadFromDataBase(sql);
     }
 
     @Override
-    public boolean insertBook(Book book){
-
+    public void insertBook(Book book) {
+        String sql = String.format("insert into %s (%s,%s,%s) values ('%s', %s, %s);",
+                TABLE_NAME, NAME, DATE, AVAILABILITY, book.getName(), book.getDate(), book.getAvailability());
+        saveInDataBase(sql);
     }
 
     @Override
-    public boolean updateBook(Book book){
-
+    public boolean updateBook(Book book) {
+        String sql = String.format("update %s set %s = ?, %s = ?, %s = ? where %s = ?;",
+                TABLE_NAME, NAME, book.getName(), DATE, book.getDate(), AVAILABILITY, book.getAvailability(),
+                ID, book.getId());
+        int updateCount = saveInDataBase(sql);
+        if (updateCount == 0) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     @Override
-    public boolean deleteBook(long id){
-
+    public boolean deleteBook(long id) {
+        String sql = String.format("delete from %s where %s = ?", TABLE_NAME, ID, id);
+        int deleteCount = saveInDataBase(sql);
+        if (deleteCount == 0) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     @Override
-    protected Book doLoad(ResultSet result){
-
+    protected Book doLoad(ResultSet result) {
+       try {
+           Date date = result.getDate(DATE);
+           LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+           return new Book(result.getLong(ID), result.getString(NAME),
+                   localDate, result.getBoolean(AVAILABILITY));
+       } catch (SQLException e) {
+           e.printStackTrace();
+       }
+       return null;
     }
 }
