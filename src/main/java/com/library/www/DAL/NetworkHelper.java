@@ -3,6 +3,7 @@ package com.library.www.DAL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Properties;
 
 public class NetworkHelper {
@@ -21,6 +22,8 @@ public class NetworkHelper {
         props.setProperty("user", "--TODO--");
         props.setProperty("password", "--TODO--");
         return DriverManager.getConnection(url, props);
+
+
 
     }
 }

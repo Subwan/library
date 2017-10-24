@@ -1,4 +1,4 @@
-package main.java.com.library.www;
+package com.library.www;
 
 public class Main {
 
