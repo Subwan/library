@@ -15,7 +15,7 @@
             <artifactId>maven-war-plugin</artifactId>
             <configuration>
                 <archive>
-                    <manifestFile>src/main/resources/META_INF/MANIFEST.MF</manifestFile>
+                    <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
                 </archive>
             </configuration>
         </plugin>
