@@ -2,10 +2,12 @@ package com.library.www.DAL;
 
 import com.library.www.Model.Book;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -24,9 +26,26 @@ public class BookMapper extends AbstractMapper {
             NAME, DATE, AVAILABILITY, TABLE_NAME);
 
     @Override
-    public List<Book> findAllBooks(long id) {
-        String sql = FIND_ALL_BOOKS;
-        return loadFromDataBase(sql);
+    public List<Book> findAllBooks() {
+        List<Book> books = new ArrayList<Book>();
+        String sql = "select * from " + TABLE_NAME;
+        PreparedStatement ps = getPrepareStatement(sql);
+        try {
+            ResultSet result = ps.executeQuery();
+            while (result.next()) {
+                long id = result.getLong(ID);
+                String name = result.getString(NAME);
+                Date date = result.getDate(DATE);
+                LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                boolean abailability = result.getBoolean(AVAILABILITY);
+                Book book = new Book(id, name, localDate, abailability);
+                books.add(book);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closePrepareStatement(ps);
+        }
     }
 
     @Override

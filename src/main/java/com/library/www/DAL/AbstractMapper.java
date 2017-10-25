@@ -13,7 +13,7 @@ public abstract class AbstractMapper {
 
     private Connection conn;
 
-    public abstract List<Book> findAllBooks(long id);
+    public abstract List<Book> findAllBooks();
 
     public abstract void insertBook(Book book);
 
