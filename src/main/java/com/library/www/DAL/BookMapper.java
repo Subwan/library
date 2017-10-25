@@ -46,6 +46,7 @@ public class BookMapper extends AbstractMapper {
         } finally {
             closePrepareStatement(ps);
         }
+        return books;
     }
 
     @Override
@@ -69,38 +70,40 @@ public class BookMapper extends AbstractMapper {
 
     @Override
     public boolean updateBook(Book book) {
+        boolean rowUpdate = false;
         String sql = String.format("update %s set %s = ?, %s = ?, %s = ? where %s = ?;",
-                TABLE_NAME, NAME, book.getName(), DATE, book.getDate(), AVAILABILITY, book.getAvailability(),
-                ID, book.getId());
-        int updateCount = saveInDataBase(sql);
-        if (updateCount == 0) {
-            return false;
-        } else {
-            return true;
+                TABLE_NAME, NAME, DATE, AVAILABILITY, ID);
+        PreparedStatement ps = getPrepareStatement(sql);
+        try {
+            ps.setString(1, book.getName());
+            ps.setDate(2, java.sql.Date.valueOf(book.getDate()));
+            ps.setBoolean(3, book.getAvailability());
+            rowUpdate = ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closePrepareStatement(ps);
         }
+        return rowUpdate;
     }
 
     @Override
     public boolean deleteBook(long id) {
-        String sql = String.format("delete from %s where %s = ?", TABLE_NAME, ID, id);
-        int deleteCount = saveInDataBase(sql);
-        if (deleteCount == 0) {
-            return false;
-        } else {
-            return true;
+        boolean rowUpdate = false;
+        String sql = String.format("delete from %s where %s = ?", TABLE_NAME, ID);
+        PreparedStatement ps = getPrepareStatement(sql);
+        try {
+            ps.setString(1, Long.toString(id));
+            rowUpdate = ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closePrepareStatement(ps);
         }
+        return rowUpdate;
     }
 
-    @Override
-    protected Book doLoad(ResultSet result) {
-       try {
-           Date date = result.getDate(DATE);
-           LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-           return new Book(result.getLong(ID), result.getString(NAME),
-                   localDate, result.getBoolean(AVAILABILITY));
-       } catch (SQLException e) {
-           e.printStackTrace();
-       }
-       return null;
-    }
+
 }
