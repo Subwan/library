@@ -1,17 +1,14 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: alexandr
-  Date: 24.10.17
-  Time: 16:30
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"%>
+
 <html>
 <head>
-    <title>Title</title>
+    <title>Library app</title>
 </head>
 <body>
-<div>Hello?</div>
+
+
 </body>
+
 </html>
 

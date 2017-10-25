@@ -15,7 +15,7 @@ public abstract class AbstractMapper {
 
     public abstract List<Book> findAllBooks();
 
-    public abstract void insertBook(Book book);
+    public abstract boolean insertBook(Book book);
 
     public abstract boolean updateBook(Book book);
 
@@ -23,11 +23,6 @@ public abstract class AbstractMapper {
 
     protected void connect() throws SQLException{
         if (conn == null || conn.isClosed()) {
-            try {
-                Class.forName("com.mysql.jdbc.Driver");
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
             String url = "jdbc:--TODO--";
 
             Properties props = new Properties();

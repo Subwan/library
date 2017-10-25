@@ -22,12 +22,9 @@ public class BookMapper extends AbstractMapper {
     private final static String DATE = "date";
     private final static String AVAILABILITY = "availability";
 
-    private final static String FIND_ALL_BOOKS = String.format("select  %s, %s, %s from %s;",
-            NAME, DATE, AVAILABILITY, TABLE_NAME);
-
     @Override
     public List<Book> findAllBooks() {
-        List<Book> books = new ArrayList<Book>();
+        List<Book> books = new ArrayList<>();
         String sql = "select * from " + TABLE_NAME;
         PreparedStatement ps = getPrepareStatement(sql);
         try {
@@ -50,7 +47,8 @@ public class BookMapper extends AbstractMapper {
     }
 
     @Override
-    public void insertBook(Book book) {
+    public boolean insertBook(Book book) {
+        boolean rowUpdate = false;
         String sql = String.format("insert into %s (%s,%s,%s) values (?, ?, ?);",
                 TABLE_NAME, NAME, DATE, AVAILABILITY);
         PreparedStatement ps = getPrepareStatement(sql);
@@ -59,13 +57,13 @@ public class BookMapper extends AbstractMapper {
             ps.setString(1, book.getName());
             ps.setDate(2, java.sql.Date.valueOf(book.getDate()));
             ps.setBoolean(3, book.getAvailability());
-            ps.executeUpdate();
+            rowUpdate = ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             closePrepareStatement(ps);
         }
-
+        return rowUpdate;
     }
 
     @Override
@@ -78,6 +76,7 @@ public class BookMapper extends AbstractMapper {
             ps.setString(1, book.getName());
             ps.setDate(2, java.sql.Date.valueOf(book.getDate()));
             ps.setBoolean(3, book.getAvailability());
+            ps.setLong(4, book.getId());
             rowUpdate = ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
@@ -94,9 +93,8 @@ public class BookMapper extends AbstractMapper {
         String sql = String.format("delete from %s where %s = ?", TABLE_NAME, ID);
         PreparedStatement ps = getPrepareStatement(sql);
         try {
-            ps.setString(1, Long.toString(id));
+            ps.setLong(1, id);
             rowUpdate = ps.executeUpdate() > 0;
-
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
