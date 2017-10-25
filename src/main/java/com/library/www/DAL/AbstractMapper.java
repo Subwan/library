@@ -2,13 +2,16 @@ package com.library.www.DAL;
 
 import com.library.www.Model.Book;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.io.IOException;
+import java.sql.*;
+import java.util.AbstractCollection;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public abstract class AbstractMapper {
+
+    private Connection conn;
 
     public abstract List<Book> findAllBooks(long id);
 
@@ -18,38 +21,50 @@ public abstract class AbstractMapper {
 
     public abstract boolean deleteBook(long id);
 
-    public int saveInDataBase(String sql) {
-        try {
-            Connection conn = NetworkHelper.getConnection();
-            PreparedStatement preStatement = conn.prepareStatement(sql);
-            preStatement.executeUpdate();
-            int count = preStatement.getUpdateCount();
-            conn.close();
-            return count;
-        } catch (Exception e) {
-            e.printStackTrace();
+    protected void connect() throws SQLException{
+        if (conn == null || conn.isClosed()) {
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            String url = "jdbc:--TODO--";
+
+            Properties props = new Properties();
+            props.setProperty("user", "--TODO--");
+            props.setProperty("password", "--TODO--");
+            conn = DriverManager.getConnection(url, props);
         }
-        return 0;
     }
 
-    protected List <Book> loadFromDataBase(String sql) {
-        try {
-            Connection conn = NetworkHelper.getConnection();
-            PreparedStatement preStatement = conn.prepareStatement(sql);
-            ResultSet result = preStatement.executeQuery();
-            List<Book> books = null;
-            while (result.next()) {
-                books.add(doLoad(result));
-            }
+    protected void disconnect() throws SQLException{
+        if (conn !=null && !conn.isClosed()) {
             conn.close();
-            return books;
+        }
+    }
 
+    public PreparedStatement getPrepareStatement(String sql) {
+        PreparedStatement ps = null;
+        try {
+            connect();
+            ps = conn.prepareStatement(sql);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+
+        return ps;
     }
 
-    protected abstract Book doLoad(ResultSet result);
+    public void closePrepareStatement(PreparedStatement ps){
+        if (ps != null) {
+            try {
+                ps.close();
+                disconnect();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
 }
