@@ -50,9 +50,21 @@ public class BookMapper extends AbstractMapper {
 
     @Override
     public void insertBook(Book book) {
-        String sql = String.format("insert into %s (%s,%s,%s) values ('%s', %s, %s);",
-                TABLE_NAME, NAME, DATE, AVAILABILITY, book.getName(), book.getDate(), book.getAvailability());
-        saveInDataBase(sql);
+        String sql = String.format("insert into %s (%s,%s,%s) values (?, ?, ?);",
+                TABLE_NAME, NAME, DATE, AVAILABILITY);
+        PreparedStatement ps = getPrepareStatement(sql);
+
+        try {
+            ps.setString(1, book.getName());
+            ps.setDate(2, java.sql.Date.valueOf(book.getDate()));
+            ps.setBoolean(3, book.getAvailability());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closePrepareStatement(ps);
+        }
+
     }
 
     @Override
