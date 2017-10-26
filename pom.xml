@@ -22,6 +22,12 @@
             <version>3.1.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>net.jangaroo</groupId>
+            <artifactId>xmlhttprequest</artifactId>
+            <version>1.0.2</version>
+        </dependency>
+
     </dependencies>
 
     <build>
