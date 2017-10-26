@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Objects;
 
 
 public class TestServlet extends HttpServlet {
@@ -16,9 +17,12 @@ public class TestServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String text = request.getParameter("id");
-
+        String method = request.getParameter("method");
         response.setContentType("text/html;charset=utf-8");
-        response.getWriter().write(text);
+        if (Objects.equals(method, "insert")) {
+            response.getWriter().write(method);
+        } else if (Objects.equals(method, "viewall")) {
+            response.getWriter().write(method);
+        }
     }
 }

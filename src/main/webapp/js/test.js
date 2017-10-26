@@ -1,7 +1,7 @@
 let insertButton = document.getElementById('insert-new-book');
 insertButton.onclick = function() {
   let xhr = new XMLHttpRequest();
-  xhr.open('GET', '/test?id=1', false);
+  xhr.open('GET', '/test?method=insert', false);
   xhr.send();
   if (xhr.status != 200) {
     alert( xhr.status + ': ' + xhr.statusText );
@@ -12,5 +12,12 @@ insertButton.onclick = function() {
 
 let viewAllButton = document.getElementById('view-all-book');
 viewAllButton.onclick = function() {
-  alert(viewAllButton.innerHTML);
+  let xhr = new XMLHttpRequest();
+  xhr.open('GET', '/test?method=viewall', false);
+  xhr.send();
+  if (xhr.status != 200) {
+    alert( xhr.status + ': ' + xhr.statusText );
+  } else {
+    alert( xhr.responseText );
+  }
 };
