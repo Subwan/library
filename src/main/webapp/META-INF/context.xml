@@ -4,13 +4,15 @@
 
     <Resource name="jdbc/library"
 
+              global="jdbc/library"
+
               auth="Container"
 
               type="javax.sql.DataSource"
 
               username="root"
 
-              password="123"
+              <!--password="123"-->
 
               driverClassName="com.mysql.jdbc.Driver"
 

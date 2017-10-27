@@ -1,6 +1,7 @@
 package com.library.www.DAL;
 
 import com.library.www.Model.Book;
+import org.apache.commons.dbcp2.BasicDataSource;
 
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
@@ -9,7 +10,7 @@ import java.util.List;
 
 public abstract class AbstractMapper {
 
-    private DataSource dataSource;
+    private BasicDataSource dataSource;
     private Connection conn;
 
     public abstract List<Book> findAllBooks();
@@ -22,7 +23,13 @@ public abstract class AbstractMapper {
 
     protected void connect() throws SQLException{
         try {
-            dataSource = (DataSource) new InitialContext().lookup("jdbc/library");
+            dataSource = new BasicDataSource();
+
+            dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+            dataSource.setUsername("root");
+//            dataSource.setPassword("123");
+            dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/library?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC");
+            dataSource.setValidationQuery("SELECT 1");
             conn = dataSource.getConnection();
         } catch (Exception e) {
             e.printStackTrace();
