@@ -1,18 +1,18 @@
 <Context>
 
-    <Resource name="jdbc/[YourDatabaseName]"
+    <Resource name="jdbc/library"
 
               auth="Container"
 
               type="javax.sql.DataSource"
 
-              username="[DatabaseUsername]"
+              username="root"
 
-              password="[DatabasePassword]"
+              password="123"
 
               driverClassName="com.mysql.jdbc.Driver"
 
-              url="jdbc:mysql:/[yourserver]:3306/[yourapplication]"
+              url="jdbc:mysql:/127.0.0.1:3306/library"
 
               maxActive="15"
 

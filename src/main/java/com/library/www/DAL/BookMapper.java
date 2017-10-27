@@ -48,7 +48,7 @@ public class BookMapper extends AbstractMapper {
 
     @Override
     public boolean insertBook(Book book) {
-        boolean rowUpdate = false;
+        boolean rowInsert = false;
         String sql = String.format("insert into %s (%s,%s,%s) values (?, ?, ?);",
                 TABLE_NAME, NAME, DATE, AVAILABILITY);
         PreparedStatement ps = getPrepareStatement(sql);
@@ -57,13 +57,13 @@ public class BookMapper extends AbstractMapper {
             ps.setString(1, book.getName());
             ps.setDate(2, java.sql.Date.valueOf(book.getDate()));
             ps.setBoolean(3, book.getAvailability());
-            rowUpdate = ps.executeUpdate() > 0;
+            rowInsert = ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             closePrepareStatement(ps);
         }
-        return rowUpdate;
+        return rowInsert;
     }
 
     @Override
