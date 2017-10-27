@@ -1,5 +1,6 @@
-package com.library.www.Servlets;
+package com.library.www.Servlet;
 
+import com.google.gson.Gson;
 import com.library.www.DAL.BookMapper;
 import com.library.www.Model.Book;
 
@@ -35,7 +36,8 @@ public class TestServlet extends HttpServlet {
                 response.getWriter().write("dont work");
             }
         } else if (Objects.equals(method, "viewall")) {
-            response.getWriter().write(method);
+            String json = viewAllBook();
+            response.getWriter().write(json);
         }
     }
 
@@ -44,8 +46,10 @@ public class TestServlet extends HttpServlet {
         return bookMapper.insertBook(book);
     }
 
-    private void viewAllBook() {
+    private String viewAllBook() {
         List<Book> books = bookMapper.findAllBooks();
+        String json = new Gson().toJson(books);
+        return json;
     }
 
     private boolean deleteBook(long id) {

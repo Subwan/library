@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 
@@ -31,7 +31,7 @@ public class BookMapper extends AbstractMapper {
                 long id = result.getLong(ID);
                 String name = result.getString(NAME);
                 Date date = result.getDate(DATE);
-                LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                LocalDate localDate = date.toLocalDate();
                 boolean abailability = result.getBoolean(AVAILABILITY);
                 Book book = new Book(id, name, localDate, abailability);
                 books.add(book);
@@ -43,6 +43,7 @@ public class BookMapper extends AbstractMapper {
         }
         return books;
     }
+
 
     @Override
     public boolean insertBook(Book book) {
