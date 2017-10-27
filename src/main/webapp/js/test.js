@@ -18,6 +18,10 @@ viewAllButton.onclick = function() {
   if (xhr.status != 200) {
     alert( xhr.status + ': ' + xhr.statusText );
   } else {
-    alert( xhr.responseText );
+    // alert( xhr.responseText );
+    let books = JSON.parse(xht.responseText);
+    for ( var key in books ) {
+      alert( "Ключ: " + key + " значение: " + books[key] );
+    }
   }
 };
