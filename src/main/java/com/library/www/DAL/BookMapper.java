@@ -11,9 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by alexandr on 24.10.17.
- */
+
 public class BookMapper extends AbstractMapper {
 
     private final static String TABLE_NAME = "books";

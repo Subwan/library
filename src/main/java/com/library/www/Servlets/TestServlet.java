@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -44,6 +45,15 @@ public class TestServlet extends HttpServlet {
     }
 
     private void viewAllBook() {
+        List<Book> books = bookMapper.findAllBooks();
+    }
 
+    private boolean deleteBook(long id) {
+        return bookMapper.deleteBook(id);
+    }
+
+    private boolean updateBook(long id, String name, LocalDate date, boolean availability) {
+        Book book = new Book(id,name, date, availability);
+        return bookMapper.updateBook(book);
     }
 }
