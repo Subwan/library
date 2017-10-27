@@ -2,15 +2,14 @@ package com.library.www.DAL;
 
 import com.library.www.Model.Book;
 
-import java.io.IOException;
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
 import java.sql.*;
-import java.util.AbstractCollection;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 public abstract class AbstractMapper {
 
+    private DataSource dataSource;
     private Connection conn;
 
     public abstract List<Book> findAllBooks();
@@ -22,19 +21,18 @@ public abstract class AbstractMapper {
     public abstract boolean deleteBook(long id);
 
     protected void connect() throws SQLException{
-        if (conn == null || conn.isClosed()) {
-            String url = "jdbc:--TODO--";
-
-            Properties props = new Properties();
-            props.setProperty("user", "--TODO--");
-            props.setProperty("password", "--TODO--");
-            conn = DriverManager.getConnection(url, props);
+        try {
+            dataSource = (DataSource) new InitialContext().lookup("jdbc/library");
+            conn = dataSource.getConnection();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     protected void disconnect() throws SQLException{
         if (conn !=null && !conn.isClosed()) {
             conn.close();
+            dataSource = null;
         }
     }
 

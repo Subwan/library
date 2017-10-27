@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
 <Context>
 
     <Resource name="jdbc/library"
@@ -12,7 +14,7 @@
 
               driverClassName="com.mysql.jdbc.Driver"
 
-              url="jdbc:mysql:/127.0.0.1:3306/library"
+              url="jdbc:mysql://127.0.0.1:3306/library"
 
               maxActive="15"
 

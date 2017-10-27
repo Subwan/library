@@ -28,7 +28,11 @@ public class TestServlet extends HttpServlet {
         response.setContentType("text/html;charset=utf-8");
         if (Objects.equals(method, "insert")) {
             boolean success = insertBook("superbook", LocalDate.of(2001, Month.JANUARY, 3), false );
-            response.getWriter().write(Boolean.toString(success));
+            if (success) {
+                response.getWriter().write("work");
+            } else {
+                response.getWriter().write("dont work");
+            }
         } else if (Objects.equals(method, "viewall")) {
             response.getWriter().write(method);
         }
