@@ -2,12 +2,22 @@ package com.library.www.Model;
 
 import java.time.*;
 
+/**
+ * Object Book.
+ */
 public class Book {
     private long id;
     private String name;
     private LocalDate date;
     private boolean availability;
 
+    /**
+     * Constructor book with id, used to update book and find all book.
+     * @param id
+     * @param name
+     * @param date
+     * @param availability
+     */
     public Book(long id, String name, LocalDate date, boolean availability) {
         setId(id);
         setName(name);
@@ -15,6 +25,12 @@ public class Book {
         setAvailability(availability);
     }
 
+    /**
+     * Constructor book without id, used to insert book.
+     * @param name
+     * @param date
+     * @param availability
+     */
     public Book(String name, LocalDate date, boolean availability) {
         setName(name);
         setDate(date);

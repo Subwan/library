@@ -6,7 +6,7 @@
 
     <servlet>
         <servlet-name>test-servlet</servlet-name>
-        <servlet-class>com.library.www.Servlet.TestServlet</servlet-class>
+        <servlet-class>com.library.www.Servlet.LibraryServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>

@@ -11,7 +11,9 @@ import java.util.ArrayList;
 import java.sql.Date;
 import java.util.List;
 
-
+/**
+ * Working with data base.
+ */
 public class BookMapper extends AbstractMapper {
 
     private final static String TABLE_NAME = "books";
@@ -19,6 +21,7 @@ public class BookMapper extends AbstractMapper {
     private final static String NAME = "name";
     private final static String DATE = "date";
     private final static String AVAILABILITY = "availability";
+
 
     @Override
     public List<Book> findAllBooks() {
@@ -32,8 +35,8 @@ public class BookMapper extends AbstractMapper {
                 String name = result.getString(NAME);
                 Date date = result.getDate(DATE);
                 LocalDate localDate = date.toLocalDate();
-                boolean abailability = result.getBoolean(AVAILABILITY);
-                Book book = new Book(id, name, localDate, abailability);
+                boolean availability = result.getBoolean(AVAILABILITY);
+                Book book = new Book(id, name, localDate, availability);
                 books.add(book);
             }
         } catch (SQLException e) {
