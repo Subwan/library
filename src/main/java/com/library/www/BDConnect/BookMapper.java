@@ -88,6 +88,7 @@ public class BookMapper extends AbstractMapper {
         return rowUpdate;
     }
 
+    @Override
     public boolean deleteBook(long id) {
         boolean rowUpdate = false;
         String sql = String.format("delete from %s where %s = ?", TABLE_NAME, ID);
