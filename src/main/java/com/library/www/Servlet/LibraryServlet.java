@@ -1,7 +1,7 @@
 package com.library.www.Servlet;
 
 import com.google.gson.Gson;
-import com.library.www.DAL.BookMapper;
+import com.library.www.BDConnect.BookMapper;
 import com.library.www.Model.Book;
 
 import javax.servlet.ServletException;

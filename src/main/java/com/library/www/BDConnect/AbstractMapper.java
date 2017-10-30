@@ -1,10 +1,8 @@
-package com.library.www.DAL;
+package com.library.www.BDConnect;
 
 import com.library.www.Model.Book;
 import org.apache.commons.dbcp2.BasicDataSource;
 
-import javax.naming.InitialContext;
-import javax.sql.DataSource;
 import java.sql.*;
 import java.util.List;
 

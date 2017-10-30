@@ -11,7 +11,7 @@
 
     <servlet-mapping>
         <servlet-name>test-servlet</servlet-name>
-        <url-pattern>/test/*</url-pattern>
+        <url-pattern>/lib/*</url-pattern>
     </servlet-mapping>
 
     <resource-env-ref>
