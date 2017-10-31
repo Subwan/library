@@ -48,7 +48,8 @@ public class LibraryServlet extends HttpServlet {
         if (Objects.equals(method, "insert")) {
             success = insertBook("superbook", LocalDate.of(2001, Month.JANUARY, 3), false);
             if (success) {
-                response.getWriter().write("book inserted");
+                String json = viewAllBooks();
+                response.getWriter().write(json);
             } else {
                 response.getWriter().write("book don't inserted");
             }
@@ -61,7 +62,8 @@ public class LibraryServlet extends HttpServlet {
             long idDelete = Long.parseLong(request.getParameter("id"));
             success = deleteBook(idDelete);
             if (success) {
-                response.getWriter().write("book deleted");
+                String json = viewAllBooks();
+                response.getWriter().write(json);
             } else {
                 response.getWriter().write("book don't deleted");
             }
@@ -72,7 +74,8 @@ public class LibraryServlet extends HttpServlet {
             boolean availability = Boolean.getBoolean(request.getParameter("availability"));
             success = updateBook(idUpdate, name, LocalDate.of(2001, Month.JANUARY, 3), availability);
             if (success) {
-                response.getWriter().write("book updated");
+                String json = viewAllBooks();
+                response.getWriter().write(json);
             } else {
                 response.getWriter().write("book don't updated");
             }
