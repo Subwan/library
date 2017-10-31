@@ -79,7 +79,7 @@ public class LibraryServlet extends HttpServlet {
             long idUpdate = Long.parseLong(request.getParameter("id"));
             String name = request.getParameter("name");
             LocalDate date = LocalDate.parse(request.getParameter("date"));
-            boolean availability = Boolean.getBoolean(request.getParameter("availability"));
+            boolean availability = Boolean.parseBoolean(request.getParameter("availability"));
             success = updateBook(idUpdate, name, date, availability);
             if (success) {
                 String json = viewAllBooks();
