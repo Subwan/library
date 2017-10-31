@@ -1,8 +1,12 @@
 let insertButton = document.getElementById('insert-new-book');
 insertButton.onclick = function() {
   let xhr = new XMLHttpRequest();
-
-  xhr.open('GET', '/lib?method=insert', false);
+  let name = prompt('Enter name');
+  let date = prompt('Enter date (yyyy-mm-dd)');
+  let availability = prompt('Enter availability (true, false)');
+  let parametr ='&name=' + name +
+     '&date=' + date + '&availability=' + availability;
+  xhr.open('GET', '/lib?method=insert' + parametr, false);
   xhr.send();
 
   if (xhr.status != 200) {
@@ -14,6 +18,7 @@ insertButton.onclick = function() {
     workWithTable(library);
   }
 };
+
 
 let viewAllButton = document.getElementById('view-all-book');
 viewAllButton.onclick = function() {
@@ -32,9 +37,30 @@ viewAllButton.onclick = function() {
   }
 };
 
-//let table = document.getElementById('library');
+// let table = document.body.getElementById('library');
+// table.oninput = function(event) {
+//   if (event.target.nodeName != 'INPUT') return;
+//   event.target.value =
+// }
+
 document.body.onclick = function(event) {
   if (event.target.nodeName != 'A') return;
+
+  if (event.target.classList.contains("update")) {
+    let tr = event.target.parentNode.parentNode;
+    let id = tr.className;
+    let name = tr.second.value;
+    alert(tr.children[1].innerHTML);
+    let date = tr.children[2].value;
+    alert(tr.children[2].innerHTML);
+    alert(date);
+    let availability = tr.children[3].value;
+    alert(tr.children[3].innerHTML);
+    alert (availability);
+    event.target.href ='/lib?method=update&id=' + id +'&name=' + name +
+       '&date=' + date + '&availability=' + availability;
+  }
+
   let href = event.target.getAttribute('href');
   let xhr = new XMLHttpRequest();
 
@@ -52,8 +78,6 @@ document.body.onclick = function(event) {
 
   return false;
 };
-
-
 
 
 function workWithTable(library) {
@@ -111,13 +135,14 @@ function Table(library) {
     for (let key in book) {
       if (book[key].year) {
         let td = document.createElement('td');
-        let date = book[key].year+ '.' + book[key].month + '.' + book[key].day;
-        td.innerHTML = date;
+        let date = book[key].year+ '-' + book[key].month + '-' + book[key].day;
+        td.innerHTML = '<input type="text" value=' + date + '>';
         td.classList.add("date");
         tr.appendChild(td);
       } else {
         let td = document.createElement('td');
-        td.innerHTML = book[key];
+        key == "id" ? td.innerHTML = book[key] : td.innerHTML = '<input type="text" value=' +
+        book[key] + '>';
         td.classList.add(key);
         tr.appendChild(td);
       }
@@ -125,10 +150,8 @@ function Table(library) {
 
     let td = document.createElement('td');
     td.innerHTML = '<a class="delete" href="/lib?method=delete&id=' +
-    book.id + '">delete</a>' + ' ' +
-    '<a class="update" href="/lib?method=update&id=' +
-    book.id + '&name='+ book.name +
-    '&availability='+ book.availability + '">update</a>';
+       book.id + '">delete</a>' + ' ' +
+       '<a class="update" href="/">update</a>';
 
     tr.appendChild(td);
     tr.classList.add(book.id);

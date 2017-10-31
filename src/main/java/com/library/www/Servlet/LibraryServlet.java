@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.List;
 import java.util.Objects;
 
@@ -45,8 +45,12 @@ public class LibraryServlet extends HttpServlet {
         String method = request.getParameter("method");
         response.setContentType("text/html;charset=utf-8");
         boolean success;
+
         if (Objects.equals(method, "insert")) {
-            success = insertBook("superbook", LocalDate.of(2001, Month.JANUARY, 3), false);
+            String name = request.getParameter("name");
+            LocalDate localDate = LocalDate.parse(request.getParameter("date"));
+            boolean availability = Boolean.parseBoolean(request.getParameter("availability"));
+            success = insertBook(name, localDate, availability);
             if (success) {
                 String json = viewAllBooks();
                 response.getWriter().write(json);
@@ -54,10 +58,12 @@ public class LibraryServlet extends HttpServlet {
                 response.getWriter().write("book don't inserted");
             }
         }
+
         if (Objects.equals(method, "viewall")) {
             String json = viewAllBooks();
             response.getWriter().write(json);
         }
+
         if (Objects.equals(method, "delete")) {
             long idDelete = Long.parseLong(request.getParameter("id"));
             success = deleteBook(idDelete);
@@ -68,11 +74,13 @@ public class LibraryServlet extends HttpServlet {
                 response.getWriter().write("book don't deleted");
             }
         }
+
         if (Objects.equals(method, "update")){
             long idUpdate = Long.parseLong(request.getParameter("id"));
             String name = request.getParameter("name");
+            LocalDate date = LocalDate.parse(request.getParameter("date"));
             boolean availability = Boolean.getBoolean(request.getParameter("availability"));
-            success = updateBook(idUpdate, name, LocalDate.of(2001, Month.JANUARY, 3), availability);
+            success = updateBook(idUpdate, name, date, availability);
             if (success) {
                 String json = viewAllBooks();
                 response.getWriter().write(json);
