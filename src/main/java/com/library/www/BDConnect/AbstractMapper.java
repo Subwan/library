@@ -2,103 +2,99 @@ package com.library.www.BDConnect;
 
 import com.library.www.Model.Book;
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.apache.ibatis.mapping.Environment;
+import org.apache.ibatis.session.Configuration;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.apache.ibatis.transaction.TransactionFactory;
+import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 
+
+import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Abstract class for working with data base.
- */
-public abstract class AbstractMapper {
+public class AbstractMapper {
 
-    private BasicDataSource dataSource;
-    private Connection conn;
 
-    /**
-     * Select all book from data base
-     * @return list of the book
-     */
-    public abstract List<Book> findAllBooks();
-
-    /**
-     * Insert book to data base.
-     * @param book
-     * @return boolean. Return 'True' if insert in data base succeed.
-     */
-    public abstract boolean insertBook(Book book);
-
-    /**
-     * Update book in data base
-     * @param book
-     * @return boolean. Return 'True' if update book in data base succeed.
-     */
-    public abstract boolean updateBook(Book book);
-
-    /**
-     * Delete book from data base.
-     * @param id
-     * @return boolean. Return 'True' if delete book from data base succeed.
-     */
-    public abstract boolean deleteBook(long id);
-
-    /**
-     * Get connect to the data base.
-     * @throws SQLException
-     */
-    protected void connect() throws SQLException{
+    private  DataSource connect() throws SQLException {
+        BasicDataSource dataSource = new BasicDataSource();
         try {
-            dataSource = new BasicDataSource();
             dataSource.setDriverClassName("com.mysql.jdbc.Driver");
             dataSource.setUsername("root");
             dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/library?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC");
             dataSource.setValidationQuery("SELECT 1");
-            conn = dataSource.getConnection();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return dataSource;
     }
 
-    /**
-     * Close connect to the data base
-     * @throws SQLException
-     */
-    protected void disconnect() throws SQLException{
-        if (conn !=null && !conn.isClosed()) {
-            conn.close();
-            dataSource = null;
-        }
+    private SqlSessionFactory dataSource() throws SQLException {
+        DataSource dataSource = connect();
+        TransactionFactory transactionFactory = new JdbcTransactionFactory();
+
+        Environment environment = new Environment("development",
+                transactionFactory, dataSource);
+        Configuration configuration = new Configuration(environment);
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(configuration);
+        sqlSessionFactory.getConfiguration().addMapper(BookMapper.class);
+
+        return sqlSessionFactory;
+
     }
 
-    /**
-     * Use method connect(), create prepareStatement.
-     * @param sql - sql request
-     * @return prepareStatement.
-     */
-    public PreparedStatement getPrepareStatement(String sql) {
-        PreparedStatement ps = null;
+    public List<Book> findAllBooks() {
+        List<Book> books = new ArrayList<>();
         try {
-            connect();
-            ps = conn.prepareStatement(sql);
+            SqlSessionFactory sqlSessionFactory = dataSource();
+            SqlSession session = sqlSessionFactory.openSession();
+            BookMapper mapper = session.getMapper(BookMapper.class);
+            books = mapper.selectAllBook();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return ps;
+        return books;
     }
 
-    /**
-     * Use method disconnect(), close prepareStatement.
-     * @param ps prepareStatement.
-     */
-    public void closePrepareStatement(PreparedStatement ps){
-        if (ps != null) {
-            try {
-                ps.close();
-                disconnect();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+    public boolean insertBook(Book book) {
+        boolean success = false;
+        try {
+            SqlSessionFactory sqlSessionFactory = dataSource();
+            SqlSession session = sqlSessionFactory.openSession();
+            BookMapper mapper = session.getMapper(BookMapper.class);
+            success = mapper.insertBook(book.getName(), java.sql.Date.valueOf(book.getDate()), book.getAvailability());
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+        return success;
     }
 
+    public boolean deleteBook(long id) {
+        boolean success = false;
+        try {
+            SqlSessionFactory sqlSessionFactory = dataSource();
+            SqlSession session = sqlSessionFactory.openSession();
+            BookMapper mapper = session.getMapper(BookMapper.class);
+            success = mapper.deleteBook(id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return success;
+    }
 
+    public boolean updateBook(Book book) {
+        boolean success = false;
+        try {
+            SqlSessionFactory sqlSessionFactory = dataSource();
+            SqlSession session = sqlSessionFactory.openSession();
+            BookMapper mapper = session.getMapper(BookMapper.class);
+            success = mapper.updateBook(book.getId(), book.getName(), java.sql.Date.valueOf(book.getDate()), book.getAvailability());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return success;
+    }
 }

@@ -4,9 +4,9 @@ insertButton.onclick = function() {
   let name = prompt('Enter name');
   let date = prompt('Enter date (yyyy-mm-dd)');
   let availability = prompt('Enter availability (true, false)');
-  let parametr ='&name=' + name +
+  let parameter ='&name=' + name +
      '&date=' + date + '&availability=' + availability;
-  xhr.open('GET', '/lib?method=insert' + parametr, false);
+  xhr.open('GET', '/lib?method=insert' + parameter, false);
   xhr.send();
 
   if (xhr.status != 200) {

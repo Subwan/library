@@ -1,6 +1,7 @@
 package com.library.www.Servlet;
 
 import com.google.gson.Gson;
+import com.library.www.BDConnect.AbstractMapper;
 import com.library.www.BDConnect.BookMapper;
 import com.library.www.Model.Book;
 
@@ -9,7 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
@@ -20,7 +20,7 @@ import java.util.Objects;
  */
 public class LibraryServlet extends HttpServlet {
 
-    private BookMapper bookMapper = new BookMapper();
+    private AbstractMapper bookMapper = new AbstractMapper();
 
     /**
      * Servlet method doPost;
