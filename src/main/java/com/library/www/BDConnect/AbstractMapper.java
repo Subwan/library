@@ -52,7 +52,8 @@ public class AbstractMapper {
             SqlSessionFactory sqlSessionFactory = dataSource();
             SqlSession session = sqlSessionFactory.openSession();
             BookMapper mapper = session.getMapper(BookMapper.class);
-            books = mapper.selectAllBook();
+            books = mapper.findAllBooks();
+            session.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -66,6 +67,7 @@ public class AbstractMapper {
             SqlSession session = sqlSessionFactory.openSession();
             BookMapper mapper = session.getMapper(BookMapper.class);
             success = mapper.insertBook(book.getName(), java.sql.Date.valueOf(book.getDate()), book.getAvailability());
+            session.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -79,6 +81,7 @@ public class AbstractMapper {
             SqlSession session = sqlSessionFactory.openSession();
             BookMapper mapper = session.getMapper(BookMapper.class);
             success = mapper.deleteBook(id);
+            session.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -92,6 +95,7 @@ public class AbstractMapper {
             SqlSession session = sqlSessionFactory.openSession();
             BookMapper mapper = session.getMapper(BookMapper.class);
             success = mapper.updateBook(book.getId(), book.getName(), java.sql.Date.valueOf(book.getDate()), book.getAvailability());
+            session.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
