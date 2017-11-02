@@ -44,7 +44,7 @@ public interface BookMapper {
                        @Param("availability") boolean availability);
 
     @Delete("delete from " + TABLE_NAME + " where " + ID + " = #{id};")
-    boolean deleteBook (@Param("id") long id);
+    int deleteBook (@Param("id") long id);
 
 
 }

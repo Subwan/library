@@ -62,9 +62,10 @@ public class AbstractMapper {
         boolean success = false;
         try {
             SqlSessionFactory sqlSessionFactory = dataSource();
-            SqlSession session = sqlSessionFactory.openSession();
+            SqlSession session = sqlSessionFactory.openSession(true);
             BookMapper mapper = session.getMapper(BookMapper.class);
-            success = mapper.insertBook(book.getName(), java.sql.Date.valueOf(book.getDate()), book.getAvailability());
+            success = mapper.insertBook(book.getName(),
+                    java.sql.Date.valueOf(book.getDate()), book.getAvailability());
             session.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -76,9 +77,10 @@ public class AbstractMapper {
         boolean success = false;
         try {
             SqlSessionFactory sqlSessionFactory = dataSource();
-            SqlSession session = sqlSessionFactory.openSession();
+            SqlSession session = sqlSessionFactory.openSession(true);
             BookMapper mapper = session.getMapper(BookMapper.class);
-            success = mapper.deleteBook(id);
+            int i = mapper.deleteBook(id);
+            success = i>0;
             session.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -90,9 +92,10 @@ public class AbstractMapper {
         boolean success = false;
         try {
             SqlSessionFactory sqlSessionFactory = dataSource();
-            SqlSession session = sqlSessionFactory.openSession();
+            SqlSession session = sqlSessionFactory.openSession(true);
             BookMapper mapper = session.getMapper(BookMapper.class);
-            success = mapper.updateBook(book.getId(), book.getName(), java.sql.Date.valueOf(book.getDate()), book.getAvailability());
+            success = mapper.updateBook(book.getId(), book.getName(),
+                    java.sql.Date.valueOf(book.getDate()), book.getAvailability());
             session.close();
         } catch (SQLException e) {
             e.printStackTrace();
