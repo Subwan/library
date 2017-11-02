@@ -14,7 +14,7 @@ insertButton.onclick = function() {
   } else {
     let json = xhr.responseText;
     let library = JSON.parse(json);
-    workWithTable(library);
+    workWithTable(library);false
   }
 };
 
@@ -35,6 +35,10 @@ viewAllButton.onclick = function() {
   }
 };
 
+// let input = document.body.getElementsByTagName('input');
+// input.onchange = function() {
+//
+// }
 
 document.body.onclick = function(event) {
   if (event.target.nodeName != 'A') return;
@@ -42,9 +46,9 @@ document.body.onclick = function(event) {
   if (event.target.classList.contains("update")) {
     let tr = event.target.parentNode.parentNode;
     let id = tr.className;
-    let name = prompt('Enter name');
-    let date = prompt('Enter date (yyyy-mm-dd)');
-    let availability = prompt('Enter availability (true, false)');
+    let name = document.getElementById('name_' + id).value;
+    let date = document.getElementById('date_' + id).value;
+    let availability = document.getElementById('availability_' + id).value;
     event.target.href ='/lib?method=update&id=' + id +'&name=' + name +
        '&date=' + date + '&availability=' + availability;
   }
@@ -122,14 +126,17 @@ function Table(library) {
     for (let key in book) {
       if (book[key].year) {
         let td = document.createElement('td');
-        let date = book[key].year+ '-' + book[key].month + '-' + book[key].day;
-        td.innerHTML = date;
+        let date = book[key].year + '-' + book[key].month + '-' + book[key].day;
+        let id = key + '_' + book.id;
+        td.innerHTML ='<input type="text" value="' + date +'" id="' +
+        id + '">';
         td.classList.add("date");
         tr.appendChild(td);
       } else {
         let td = document.createElement('td');
-        td.innerHTML = book[key]
-        td.classList.add(key);
+        let id = key + '_' + book.id;
+        key == "id" ? td.innerHTML = book[key] : td.innerHTML = '<input type="text" id="' +
+        id + '" value="' + book[key] + '">';
         tr.appendChild(td);
       }
     }
