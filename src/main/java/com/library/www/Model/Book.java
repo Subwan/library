@@ -1,5 +1,6 @@
 package com.library.www.Model;
 
+import java.sql.Date;
 import java.time.*;
 
 /**
@@ -34,6 +35,13 @@ public class Book {
     public Book(String name, LocalDate date, boolean availability) {
         setName(name);
         setDate(date);
+        setAvailability(availability);
+    }
+
+    public Book(Long id, String name, Date date, Boolean availability) {
+        setId(id);
+        setName(name);
+        setDate(date.toLocalDate());
         setAvailability(availability);
     }
 

@@ -4,7 +4,9 @@ import com.library.www.Model.Book;
 import org.apache.ibatis.annotations.*;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
+
 
 
 /**
@@ -18,18 +20,14 @@ public interface BookMapper {
     String DATE = "date";
     String AVAILABILITY = "availability";
 
-  /*  @SelectProvider(type = BookSqlBuilder.class, method = "buildFindAllBooks")
-    List<Book> findAllBooks();
 
-    class BookSqlBuilder {
 
-        public String buildFindAllBooks() {
-            return new SQL(){{
-                SELECT("*");
-                FROM(TABLE_NAME);
-            }}.toString();
-        }
-    }*/
+    @ConstructorArgs({
+            @Arg(column = "id", javaType = Long.class)
+            ,@Arg(column = "name", javaType = String.class)
+            ,@Arg(column = "date", javaType = Date.class)
+            ,@Arg(column = "availability", javaType = Boolean.class)
+    })
     @Select("SELECT * FROM " + TABLE_NAME)
     List<Book> findAllBooks();
 
@@ -40,12 +38,12 @@ public interface BookMapper {
 
 
     @Update("update " + TABLE_NAME + " set " + NAME + "=#{name}, " + DATE +
-            "=#{date}, " + AVAILABILITY + "=#{availability} where " + ID + " =#{id};")
+            "=#{date}, " + AVAILABILITY + "=#{availability} where " + ID + "=#{id};")
     boolean updateBook(@Param("id") long id, @Param("name") String name,
                        @Param("date") Date date,
                        @Param("availability") boolean availability);
 
-    @Delete("delete from " + TABLE_NAME + " where " + ID + " =#{id};")
+    @Delete("delete from " + TABLE_NAME + " where " + ID + " = #{id};")
     boolean deleteBook (@Param("id") long id);
 
 

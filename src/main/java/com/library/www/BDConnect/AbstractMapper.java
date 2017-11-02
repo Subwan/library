@@ -11,7 +11,6 @@ import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 
 
-import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,13 +18,12 @@ import java.util.List;
 public class AbstractMapper {
 
 
-    private  DataSource connect() throws SQLException {
+    private  BasicDataSource connect() throws SQLException {
         BasicDataSource dataSource = new BasicDataSource();
         try {
             dataSource.setDriverClassName("com.mysql.jdbc.Driver");
             dataSource.setUsername("root");
             dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/library?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC");
-            dataSource.setValidationQuery("SELECT 1");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -33,7 +31,7 @@ public class AbstractMapper {
     }
 
     private SqlSessionFactory dataSource() throws SQLException {
-        DataSource dataSource = connect();
+        BasicDataSource dataSource = connect();
         TransactionFactory transactionFactory = new JdbcTransactionFactory();
 
         Environment environment = new Environment("development",
